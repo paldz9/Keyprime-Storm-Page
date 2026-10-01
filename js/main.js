@@ -56,18 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   animEls.forEach(el => animObs.observe(el));
 
-  /* ── Process timeline fill ── */
-  const processLine = document.getElementById('processLine');
-  if (processLine) {
-    const lineObs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
-        processLine.classList.add('filled');
-        lineObs.unobserve(processLine);
-      }
-    }, { threshold: 0.3 });
-    lineObs.observe(processLine);
-  }
-
   /* ── Smooth anchor scroll ── */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
