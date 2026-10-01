@@ -1,195 +1,159 @@
 /* =============================================
-   KEYPRIME STORM PAGE — MAIN JS
-   Parallax · Scroll animations · Storm rain
+   KEYPRIME STORM PAGE — JS
+   Parallax · Scroll-in · Storm rain/lightning
    ============================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ─── Navbar scroll ─── */
+  /* ── Navbar scroll shadow ── */
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('navbar--scrolled', window.scrollY > 40);
+    navbar.classList.toggle('navbar--scrolled', window.scrollY > 30);
   }, { passive: true });
 
-  /* ─── Mobile nav ─── */
-  const navToggle = document.getElementById('navToggle');
-  const navMenu   = document.getElementById('navMenu');
+  /* ── Mobile nav ── */
+  const toggle  = document.getElementById('navToggle');
+  const menu    = document.getElementById('navMenu');
+  const overlay = document.getElementById('navOverlay');
 
-  // Create overlay element for mobile nav
-  const overlay = document.createElement('div');
-  overlay.className = 'nav-overlay';
-  document.body.appendChild(overlay);
-
-  function toggleNav() {
-    const open = navMenu.classList.toggle('open');
-    navToggle.classList.toggle('active', open);
+  function flipNav() {
+    const open = menu.classList.toggle('open');
+    toggle.classList.toggle('active', open);
     overlay.classList.toggle('active', open);
     document.body.style.overflow = open ? 'hidden' : '';
   }
-  navToggle.addEventListener('click', toggleNav);
-  overlay.addEventListener('click', toggleNav);
-  navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    if (navMenu.classList.contains('open')) toggleNav();
-  }));
+  toggle.addEventListener('click', flipNav);
+  overlay.addEventListener('click', flipNav);
+  menu.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => menu.classList.contains('open') && flipNav())
+  );
 
-  /* ─── Parallax ─── */
-  const parallaxEls = document.querySelectorAll('[data-parallax]');
-
-  function updateParallax() {
-    const scrollY = window.scrollY;
+  /* ── Parallax ── */
+  const pxEls = document.querySelectorAll('[data-parallax]');
+  function parallax() {
+    const sy = window.scrollY;
     const wh = window.innerHeight;
-
-    parallaxEls.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const speed = parseFloat(el.dataset.parallax) || 0.15;
-
-      // Only apply when element is near viewport
-      if (rect.bottom < -200 || rect.top > wh + 200) return;
-
-      const offset = (scrollY - (el.offsetTop - wh)) * speed;
-      el.style.transform = `translate3d(0, ${offset}px, 0)`;
+    pxEls.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -300 || r.top > wh + 300) return;
+      const speed = parseFloat(el.dataset.parallax) || 0.12;
+      const off = (sy - (el.offsetTop - wh)) * speed;
+      el.style.transform = `translate3d(0,${off}px,0)`;
     });
   }
-  window.addEventListener('scroll', updateParallax, { passive: true });
-  updateParallax();
+  window.addEventListener('scroll', parallax, { passive: true });
+  parallax();
 
-  /* ─── Scroll-in animations ─── */
+  /* ── Scroll-in animations ── */
   const animEls = document.querySelectorAll('.anim-in');
-
-  const animObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const delay = parseInt(entry.target.dataset.delay) || 0;
-        setTimeout(() => entry.target.classList.add('visible'), delay);
-        animObserver.unobserve(entry.target);
+  const animObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const d = parseInt(e.target.dataset.delay) || 0;
+        setTimeout(() => e.target.classList.add('visible'), d);
+        animObs.unobserve(e.target);
       }
     });
-  }, {
-    threshold: 0.12,
-    rootMargin: '0px 0px -60px 0px'
-  });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  animEls.forEach(el => animObs.observe(el));
 
-  animEls.forEach(el => animObserver.observe(el));
+  /* ── Process timeline fill ── */
+  const processLine = document.getElementById('processLine');
+  if (processLine) {
+    const lineObs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        processLine.classList.add('filled');
+        lineObs.unobserve(processLine);
+      }
+    }, { threshold: 0.3 });
+    lineObs.observe(processLine);
+  }
 
-  /* ─── Smooth anchor scroll ─── */
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', e => {
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (target) {
+  /* ── Smooth anchor scroll ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) {
         e.preventDefault();
-        const y = target.getBoundingClientRect().top + window.scrollY - navbar.offsetHeight - 20;
+        const y = t.getBoundingClientRect().top + window.scrollY - navbar.offsetHeight - 16;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
     });
   });
 
-  /* ─────────────────────────────────────────
-     SUBTLE STORM RAIN EFFECT
-     Draws very thin, semi-transparent diagonal
-     lines on a fixed canvas — only while the
-     hero is in view. Fades out as you scroll.
-     ───────────────────────────────────────── */
+  /* ═══════════════════════════════════════════
+     STORM RAIN + LIGHTNING
+     ═══════════════════════════════════════════ */
   const canvas = document.getElementById('stormCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let drops = [], raf = null, active = false;
+  const N = 70;
 
-  let drops = [];
-  const DROP_COUNT = 80;
-  let animId = null;
-  let isActive = false;
+  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize();
+  addEventListener('resize', resize);
 
-  function resizeCanvas() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  function initDrops() {
-    drops = [];
-    for (let i = 0; i < DROP_COUNT; i++) {
-      drops.push(makeDrop());
-    }
-  }
-
-  function makeDrop() {
+  function mkDrop() {
     return {
       x: Math.random() * (canvas.width + 200) - 100,
-      y: Math.random() * canvas.height - canvas.height,
-      len: 18 + Math.random() * 30,
-      speed: 8 + Math.random() * 8,
-      opacity: 0.04 + Math.random() * 0.08,
-      wind: 2 + Math.random() * 2
+      y: Math.random() * canvas.height * -1,
+      len: 16 + Math.random() * 28,
+      sp: 9 + Math.random() * 7,
+      op: .03 + Math.random() * .07,
+      w: 1.8 + Math.random() * 1.4
     };
   }
 
-  function drawRain() {
+  function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drops.forEach(d => {
+    for (const d of drops) {
       ctx.beginPath();
       ctx.moveTo(d.x, d.y);
-      ctx.lineTo(d.x + d.wind * 2, d.y + d.len);
-      ctx.strokeStyle = `rgba(180,200,220,${d.opacity})`;
-      ctx.lineWidth = 0.8;
+      ctx.lineTo(d.x + d.w * 2, d.y + d.len);
+      ctx.strokeStyle = `rgba(170,195,215,${d.op})`;
+      ctx.lineWidth = .7;
       ctx.stroke();
-
-      d.x += d.wind;
-      d.y += d.speed;
-
-      if (d.y > canvas.height + 40) {
-        Object.assign(d, makeDrop());
-        d.y = -d.len;
-      }
-    });
-    animId = requestAnimationFrame(drawRain);
+      d.x += d.w;
+      d.y += d.sp;
+      if (d.y > canvas.height + 40) Object.assign(d, mkDrop(), { y: -d.len });
+    }
+    raf = requestAnimationFrame(draw);
   }
 
-  // Only show rain while hero is visible
+  /* Only rain while hero is in view */
   const hero = document.getElementById('hero');
-  const heroObserver = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && !isActive) {
-      isActive = true;
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !active) {
+      active = true;
       canvas.classList.add('active');
-      initDrops();
-      drawRain();
-    } else if (!entry.isIntersecting && isActive) {
-      isActive = false;
+      drops = Array.from({ length: N }, mkDrop);
+      draw();
+    } else if (!e.isIntersecting && active) {
+      active = false;
       canvas.classList.remove('active');
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(raf);
     }
-  }, { threshold: 0.05 });
-  heroObserver.observe(hero);
+  }, { threshold: 0.02 }).observe(hero);
 
-  // Occasional lightning flash (very subtle)
-  function lightningFlash() {
-    if (!isActive) return;
-
-    // 15% chance every 4-8 seconds
-    if (Math.random() > 0.15) {
-      setTimeout(lightningFlash, 4000 + Math.random() * 4000);
+  /* Occasional lightning */
+  const grad = document.querySelector('.hero__gradient');
+  function flash() {
+    if (!active || !grad) {
+      setTimeout(flash, 5000 + Math.random() * 5000);
       return;
     }
-
-    const heroOverlay = document.querySelector('.hero__overlay');
-    if (!heroOverlay) return;
-
-    heroOverlay.style.transition = 'background 0.05s';
-    heroOverlay.style.background = `
-      radial-gradient(ellipse at 30% 50%, rgba(0,0,0,0.2) 0%, transparent 70%),
-      linear-gradient(180deg, rgba(180,190,210,0.08) 0%, rgba(0,0,0,0.5) 100%)
-    `;
-
+    if (Math.random() > .18) {
+      setTimeout(flash, 4000 + Math.random() * 5000);
+      return;
+    }
+    // Flash: brief white overlay
+    grad.style.transition = 'box-shadow .04s';
+    grad.style.boxShadow = 'inset 0 0 120px 60px rgba(200,210,230,.06)';
     setTimeout(() => {
-      heroOverlay.style.transition = 'background 0.8s ease';
-      heroOverlay.style.background = `
-        radial-gradient(ellipse at 30% 50%, rgba(0,0,0,0.4) 0%, transparent 70%),
-        linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)
-      `;
-    }, 80);
-
-    setTimeout(lightningFlash, 4000 + Math.random() * 6000);
+      grad.style.transition = 'box-shadow .6s ease';
+      grad.style.boxShadow = 'none';
+    }, 70);
+    setTimeout(flash, 5000 + Math.random() * 6000);
   }
-
-  // Start lightning loop after a delay
-  setTimeout(lightningFlash, 3000);
+  setTimeout(flash, 3500);
 });

@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <!-- ===== STORM RAIN CANVAS (subtle effect) ===== -->
+  <!-- Storm rain canvas -->
   <canvas id="stormCanvas" class="storm-canvas"></canvas>
 
   <!-- ===== TOP BAR ===== -->
@@ -20,7 +20,7 @@
     <div class="container top-bar__inner">
       <span class="top-bar__warranty">TRUE LIFETIME WARRANTY&trade;</span>
       <a href="tel:+19525223705" class="top-bar__phone">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         +1 (952) 522-3705
       </a>
     </div>
@@ -32,11 +32,9 @@
       <a href="https://keyprimeroofing.com" class="navbar__logo">
         <img src="assets/logos/keyprime-logo-color.png" alt="Keyprime Inc." class="navbar__logo-img">
       </a>
-
       <button class="navbar__toggle" id="navToggle" aria-label="Toggle navigation">
         <span></span><span></span><span></span>
       </button>
-
       <ul class="navbar__menu" id="navMenu">
         <li class="navbar__item navbar__item--dropdown">
           <a href="https://keyprimeroofing.com/services" class="navbar__link">Services <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></a>
@@ -55,82 +53,169 @@
     </div>
   </nav>
 
-  <!-- ===== HERO SECTION ===== -->
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- ===== HERO — video with embedded text, NO overlay copy ===== -->
   <section class="hero" id="hero">
-    <div class="hero__media" data-parallax="0.3">
-      <video class="hero__video hero__video--desktop" autoplay muted loop playsinline poster="assets/images/storm-hero-desktop.png">
-        <source src="assets/videos/storm-hero.mp4" type="video/mp4">
+    <div class="hero__media" data-parallax="0.25">
+      <video class="hero__video" autoplay muted loop playsinline poster="assets/images/storm-hero-desktop.png">
+        <source src="assets/videos/storm-hero-sample.mp4" type="video/mp4">
       </video>
-      <video class="hero__video hero__video--mobile" autoplay muted loop playsinline poster="assets/images/storm-hero-mobile.png">
-        <source src="assets/videos/storm-hero-mobile.mp4" type="video/mp4">
-      </video>
-      <div class="hero__overlay"></div>
     </div>
-    <div class="container hero__content">
-      <h1 class="hero__title anim-in" data-delay="0">
-        <span class="hero__title-line">Storm Repair</span>
-      </h1>
-      <h2 class="hero__subtitle-heading anim-in" data-delay="200">
-        <img src="assets/icons/storm-icon-v2.png" alt="" class="hero__storm-icon" width="36" height="36">
-        Weather the Storm with Us
-      </h2>
-    </div>
+    <div class="hero__gradient"></div>
     <div class="hero__scroll-cue">
       <div class="hero__scroll-line"></div>
     </div>
-    <!-- Angled divider -->
-    <div class="angle-divider angle-divider--bottom">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,80 L1440,0 L1440,80 Z" fill="#ffffff"/></svg>
-    </div>
   </section>
 
-  <!-- ===== INTRO / CONTENT SECTION ===== -->
-  <section class="intro" id="storm-intro">
+  <!-- ===== INTRO ===== -->
+  <section class="intro">
     <div class="container">
       <div class="intro__grid">
-        <div class="intro__text">
-          <span class="section-label anim-in">Storm Repair</span>
-          <h2 class="section-title anim-in" data-delay="100">Minnesota's storms are some of the toughest in America</h2>
-          <p class="anim-in" data-delay="200">Strong rains and high winds bring down tree branches on your roof, hail impact causes water leaks in your home's exterior, and heavy ice and snow can buckle gutters and put your structure at risk.</p>
+        <div class="intro__col intro__col--text">
+          <span class="tag anim-in">Storm Repair</span>
+          <h2 class="intro__heading anim-in" data-delay="100">
+            Weather the<br>Storm with Us
+          </h2>
+          <div class="intro__divider anim-in" data-delay="150"></div>
+          <h3 class="intro__sub anim-in" data-delay="200">Minnesota's storms are some of the toughest in America</h3>
+          <p class="anim-in" data-delay="250">Strong rains and high winds bring down tree branches on your roof, hail impact causes water leaks in your home's exterior, and heavy ice and snow can buckle gutters and put your structure at risk.</p>
           <p class="anim-in" data-delay="300">Keyprime helps homeowners get a real look at the damage fast. We also help you navigate your insurance claim so you have the power to bring your home back to its pre-storm strength as quickly as possible.</p>
+          <a href="https://keyprimeroofing.com/free-estimate" class="btn btn--primary anim-in" data-delay="350">Get A Free Quote</a>
         </div>
-        <div class="intro__image anim-in" data-delay="200">
-          <div class="intro__image-wrap" data-parallax="0.08">
-            <img src="assets/images/roofer-action.png" alt="Keyprime roofer inspecting storm damage" loading="lazy">
+        <div class="intro__col intro__col--image">
+          <div class="intro__photo anim-in" data-delay="200">
+            <div class="intro__photo-inner" data-parallax="0.06">
+              <img src="assets/images/roofer-rooftop.png" alt="Keyprime roofer at work" loading="lazy">
+            </div>
+            <div class="intro__photo-accent"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== COMPARISON CHART ===== -->
-  <section class="comparison">
-    <div class="angle-divider angle-divider--top-dark">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,0 L1440,80 L0,80 Z" fill="#1a1a1a"/></svg>
-    </div>
-    <div class="comparison__bg" data-parallax="0.15">
+  <!-- ===== DAMAGE TYPES ===== -->
+  <section class="services">
+    <div class="services__bg" data-parallax="0.1">
       <img src="assets/images/storm-hero-desktop.png" alt="" loading="lazy">
     </div>
-    <div class="comparison__overlay"></div>
-    <div class="container comparison__content">
-      <div class="comparison__image anim-in">
-        <img src="assets/images/comparison-chart.avif" alt="Keyprime vs Others comparison chart" loading="lazy">
+    <div class="services__overlay"></div>
+    <div class="container services__content">
+      <span class="tag tag--light anim-in">What We Repair</span>
+      <h2 class="services__heading anim-in" data-delay="100">Comprehensive Storm Damage Services</h2>
+      <div class="services__grid">
+        <div class="service-card anim-in" data-delay="0">
+          <div class="service-card__icon">
+            <!-- Roof icon -->
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22L24 6l20 16"/><path d="M8 20v20h32V20"/><path d="M18 40V28h12v12"/></svg>
+          </div>
+          <h3>Roof Damage</h3>
+          <p>Missing shingles, leaks, and structural damage from high winds, fallen trees, and hail impact.</p>
+        </div>
+        <div class="service-card anim-in" data-delay="100">
+          <div class="service-card__icon">
+            <!-- Siding icon -->
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="2"/><path d="M6 16h36M6 26h36M6 36h36"/></svg>
+          </div>
+          <h3>Siding Damage</h3>
+          <p>Cracked, dented, or blown-off siding panels restored to protect your home's exterior.</p>
+        </div>
+        <div class="service-card anim-in" data-delay="200">
+          <div class="service-card__icon">
+            <!-- Window icon -->
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="32" height="36" rx="2"/><path d="M24 6v36M8 24h32"/></svg>
+          </div>
+          <h3>Window &amp; Door Damage</h3>
+          <p>Broken glass, damaged frames, and compromised seals from storm debris — replaced to factory specs.</p>
+        </div>
+        <div class="service-card anim-in" data-delay="300">
+          <div class="service-card__icon">
+            <!-- Gutter icon -->
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h40l-4 8H8z"/><path d="M12 22v16M24 22v16M36 22v16"/><path d="M8 42h32"/></svg>
+          </div>
+          <h3>Gutter &amp; Guard Damage</h3>
+          <p>Buckled, torn, or detached gutters and guards re-installed to protect your foundation.</p>
+        </div>
       </div>
     </div>
-    <div class="angle-divider angle-divider--bottom-dark">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,0 L1440,0 L1440,80 Z" fill="#ffffff"/></svg>
+  </section>
+
+  <!-- ===== KEYPRIME vs OTHERS ===== -->
+  <section class="comparison">
+    <div class="container">
+      <span class="tag tag--center anim-in">Why Keyprime</span>
+      <h2 class="comparison__heading anim-in" data-delay="100">The Keyprime Difference</h2>
+      <div class="comparison__table">
+        <div class="comparison__col comparison__col--kp anim-in" data-delay="100">
+          <div class="comparison__header">
+            <img src="assets/logos/keyprime-logo-white.png" alt="Keyprime" width="120">
+          </div>
+          <ul class="comparison__list">
+            <li><span class="check">&#10003;</span> Free, comprehensive home inspection</li>
+            <li><span class="check">&#10003;</span> Direct insurance coordination</li>
+            <li><span class="check">&#10003;</span> True Lifetime Warranty on all work</li>
+            <li><span class="check">&#10003;</span> Licensed &amp; insured Minnesota contractor</li>
+            <li><span class="check">&#10003;</span> No upfront cost to homeowner</li>
+            <li><span class="check">&#10003;</span> 1-year post-install inspection included</li>
+          </ul>
+        </div>
+        <div class="comparison__col comparison__col--others anim-in" data-delay="250">
+          <div class="comparison__header">
+            <span>Others</span>
+          </div>
+          <ul class="comparison__list">
+            <li><span class="cross">&times;</span> Inspection fees or limited scope</li>
+            <li><span class="cross">&times;</span> Homeowner manages claims alone</li>
+            <li><span class="cross">&times;</span> Standard manufacturer warranty only</li>
+            <li><span class="cross">&times;</span> May lack proper licensing</li>
+            <li><span class="cross">&times;</span> Upfront deposits required</li>
+            <li><span class="cross">&times;</span> No follow-up after completion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESS ===== -->
+  <section class="process">
+    <div class="container">
+      <span class="tag tag--center anim-in">How It Works</span>
+      <h2 class="process__heading anim-in" data-delay="100">Your Storm Recovery in 4 Steps</h2>
+      <div class="process__track">
+        <div class="process__line" id="processLine"></div>
+        <div class="process__step anim-in" data-delay="0">
+          <div class="process__dot"><span>1</span></div>
+          <h3>Contact Us</h3>
+          <p>Call or submit our online form. A Keyprime representative will reach out promptly to schedule your free inspection.</p>
+        </div>
+        <div class="process__step anim-in" data-delay="150">
+          <div class="process__dot"><span>2</span></div>
+          <h3>Free Inspection</h3>
+          <p>Our certified inspectors assess your roof and exterior for wind, hail, and impact damage — no cost, no obligation.</p>
+        </div>
+        <div class="process__step anim-in" data-delay="300">
+          <div class="process__dot"><span>3</span></div>
+          <h3>Insurance Coordination</h3>
+          <p>We work directly with your insurance provider, documenting every detail so your claim is filed fast and accurately.</p>
+        </div>
+        <div class="process__step anim-in" data-delay="450">
+          <div class="process__dot"><span>4</span></div>
+          <h3>Expert Restoration</h3>
+          <p>Our skilled crews restore your home to pre-storm condition — backed by our True Lifetime Warranty.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ===== TESTIMONIAL ===== -->
   <section class="testimonial">
     <div class="container">
-      <div class="testimonial__card anim-in">
-        <svg class="testimonial__quote-icon" width="56" height="40" viewBox="0 0 56 40" fill="none">
-          <path d="M0 40V24c0-13.3 8.3-22.4 22-24l1.5 6C14.2 8.2 10 14.4 10 20h12v20H0zm32 0V24c0-13.3 8.3-22.4 22-24l1.5 6C46.2 8.2 42 14.4 42 20h12v20H32z" fill="#DF2531" opacity="0.15"/>
-        </svg>
+      <div class="testimonial__inner anim-in">
+        <div class="testimonial__mark">&ldquo;</div>
         <blockquote>
-          <p>"Keyprime is a class act. They went above and beyond my expectations on repairing my roof after hail damage, and replacing deck railings."</p>
+          <p>Keyprime is a class act. They went above and beyond my expectations on repairing my roof after hail damage, and replacing deck railings.</p>
         </blockquote>
         <div class="testimonial__author">
           <strong>Matt Gaudet</strong>
@@ -140,30 +225,34 @@
     </div>
   </section>
 
-  <!-- ===== FAQ SECTION ===== -->
+  <!-- ===== FAQ ===== -->
   <section class="faq">
     <div class="container">
+      <div class="faq__header">
+        <span class="tag anim-in">FAQ</span>
+        <h2 class="faq__heading anim-in" data-delay="100">Common Questions About Storm Damage</h2>
+      </div>
       <div class="faq__list">
         <details class="faq__item anim-in" data-delay="0" open>
-          <summary class="faq__question">How do I know if my roof has storm damage?</summary>
+          <summary>How do I know if my roof has storm damage?</summary>
           <div class="faq__answer">
             <p>If you suspect your roof has wind or hail damage, contact a roofing contractor like Keyprime because the only way to confirm such damage is to have a qualified inspector assess it. There are some indicators of potential damage that you can spot. Check the attic for water stains, black marks, or mold. Inspect your ceiling for stains. Look for granules in your gutters that would indicate your shingles were damaged. Older roofs are more susceptible to damage, so if your roof is 18 to 20 years old or older, you should consider roof replacement.</p>
           </div>
         </details>
         <details class="faq__item anim-in" data-delay="80">
-          <summary class="faq__question">How do I get storm damage roof repair covered by insurance?</summary>
+          <summary>How do I get storm damage roof repair covered by insurance?</summary>
           <div class="faq__answer">
             <p>Once you suspect your roof has storm damage, contact your insurance provider to confirm what type of policy you have, how long it will take to process a claim, and if estimates will be required for repairs. You have two years after the date of damage to report it to your insurance company. Once you contact your insurer, contact Keyprime. Our qualified inspectors are trained to identify storm damage and our experienced staff will work with insurance to get storm damage to your roof repaired quickly and correctly.</p>
           </div>
         </details>
         <details class="faq__item anim-in" data-delay="160">
-          <summary class="faq__question">What type of hail damage requires roof repair?</summary>
+          <summary>What type of hail damage requires roof repair?</summary>
           <div class="faq__answer">
             <p>Depending on the size of the hail damage, different types of repairs will be more useful. The type of repair would depend on how deep and wide the hole is. A roofing contractor will be able to determine if a repair or replacement is needed.</p>
           </div>
         </details>
         <details class="faq__item anim-in" data-delay="240">
-          <summary class="faq__question">Why should I have my roofing contractor work directly with my insurance provider?</summary>
+          <summary>Why should I have my roofing contractor work directly with my insurance provider?</summary>
           <div class="faq__answer">
             <p>Keyprime not only inspects roofs for storm damage, but can also work directly with your insurance provider to get the damage repaired quickly with no upfront cost to you. Keyprime employs a team of experienced professionals that specialize in working through insurance claims to make sure they are processed properly and on time.</p>
           </div>
@@ -172,88 +261,66 @@
     </div>
   </section>
 
-  <!-- ===== CTA / LET'S TALK ===== -->
-  <section class="cta-section">
-    <div class="angle-divider angle-divider--top-dark">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,80 L1440,0 L1440,80 Z" fill="#111111"/></svg>
-    </div>
-    <div class="cta-section__bg" data-parallax="0.2">
+  <!-- ===== CTA — LET'S TALK ===== -->
+  <section class="cta">
+    <div class="cta__bg" data-parallax="0.18">
       <img src="assets/images/team-photo.png" alt="" loading="lazy">
     </div>
-    <div class="cta-section__overlay"></div>
-    <div class="container cta-section__content">
+    <div class="cta__overlay"></div>
+    <div class="container cta__content">
       <h2 class="anim-in">Let's Talk.</h2>
       <p class="anim-in" data-delay="100">Click below to complete our form. You'll be promptly contacted by a Keyprime representative.</p>
-      <div class="cta-section__actions anim-in" data-delay="200">
-        <a href="https://keyprimeroofing.com/free-estimate" class="btn btn--primary btn--lg">Get A Free Quote</a>
-      </div>
-    </div>
-    <div class="angle-divider angle-divider--bottom">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,0 L0,80 L1440,80 Z" fill="#111111"/></svg>
+      <a href="https://keyprimeroofing.com/free-estimate" class="btn btn--primary btn--lg anim-in" data-delay="200">Get A Free Quote</a>
     </div>
   </section>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="container">
-      <div class="footer__grid">
+      <div class="footer__top">
         <div class="footer__brand">
-          <img src="assets/logos/keyprime-logo-white.png" alt="Keyprime Inc." width="160">
-          <p class="footer__address">
-            Keyprime Inc.<br>
-            1000 Boone Avenue N, Suite 760<br>
-            Golden Valley, MN 55427
-          </p>
-          <p class="footer__support">Customer Support: <a href="tel:+19525223705">+1 (952) 522-3705</a></p>
+          <img src="assets/logos/keyprime-logo-white.png" alt="Keyprime Inc." width="150">
+          <p>Keyprime Inc.<br>1000 Boone Avenue N, Suite 760<br>Golden Valley, MN 55427</p>
+          <p class="footer__phone">Customer Support: <a href="tel:+19525223705">+1 (952) 522-3705</a></p>
         </div>
-
-        <div class="footer__col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="https://keyprimeroofing.com/about">About Us</a></li>
-            <li><a href="https://keyprimeroofing.com/contact">Contact Us</a></li>
-            <li><a href="https://keyprimeroofing.com/free-estimate">Estimates</a></li>
-            <li><a href="https://keyprimeroofing.com/reviews">Reviews</a></li>
-            <li><a href="https://keyprimeroofing.com/financing">Financing</a></li>
-            <li><a href="https://keyprimeroofing.com/hiring">Hiring</a></li>
-          </ul>
-        </div>
-
-        <div class="footer__col">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="https://keyprimeroofing.com/warranty">Warranty</a></li>
-            <li><a href="https://keyprimeroofing.com/referral-program">Referral Program</a></li>
-            <li><a href="https://keyprimeroofing.com/blog">Blog</a></li>
-          </ul>
-        </div>
-
-        <div class="footer__col">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="https://keyprimeroofing.com/tree-damage">Tree Damage</a></li>
-            <li><a href="https://keyprimeroofing.com/services/storm-repair">Storm Damage</a></li>
-            <li><a href="https://keyprimeroofing.com/expert-restoration">Expert Restoration Services</a></li>
-          </ul>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="https://keyprimeroofing.com/about">About Us</a></li>
+              <li><a href="https://keyprimeroofing.com/contact">Contact Us</a></li>
+              <li><a href="https://keyprimeroofing.com/free-estimate">Estimates</a></li>
+              <li><a href="https://keyprimeroofing.com/reviews">Reviews</a></li>
+              <li><a href="https://keyprimeroofing.com/financing">Financing</a></li>
+              <li><a href="https://keyprimeroofing.com/hiring">Hiring</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="https://keyprimeroofing.com/warranty">Warranty</a></li>
+              <li><a href="https://keyprimeroofing.com/referral-program">Referral Program</a></li>
+              <li><a href="https://keyprimeroofing.com/blog">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="https://keyprimeroofing.com/tree-damage">Tree Damage</a></li>
+              <li><a href="https://keyprimeroofing.com/services/storm-repair">Storm Damage</a></li>
+              <li><a href="https://keyprimeroofing.com/expert-restoration">Expert Restoration Services</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-
-      <div class="footer__newsletter">
-        <p>Stay updated with Keyprime news</p>
-        <form class="footer__newsletter-form" onsubmit="return false;">
-          <input type="email" placeholder="Your Email" aria-label="Email address">
-          <button type="submit" class="btn btn--primary btn--sm">Subscribe</button>
-        </form>
-      </div>
-
       <div class="footer__bottom">
         <div class="footer__licenses">
           <span>MN License BC690664</span>
           <span>WI License NO. 052300545 - DC</span>
         </div>
         <div class="footer__social">
-          <a href="https://www.facebook.com/keyprimeroofing" aria-label="Facebook"><img src="assets/icons/fb-icon.png" alt="" width="20" height="20"></a>
-          <a href="https://www.instagram.com/keyprimeroofing" aria-label="Instagram"><img src="assets/icons/ig-icon.png" alt="" width="20" height="20"></a>
+          <a href="https://www.facebook.com/keyprimeroofing" aria-label="Facebook"><img src="assets/icons/fb-icon.png" alt="" width="18"></a>
+          <a href="https://www.instagram.com/keyprimeroofing" aria-label="Instagram"><img src="assets/icons/ig-icon.png" alt="" width="18"></a>
         </div>
         <p>&copy; Keyprime Inc. All rights reserved.</p>
         <div class="footer__legal">
@@ -265,10 +332,8 @@
     </div>
   </footer>
 
-  <!-- ===== SIDE TAB: Get Instant Quote ===== -->
-  <a href="https://keyprimeroofing.com/free-estimate" class="side-tab" id="sideTab">
-    <span>Get Instant Quote</span>
-  </a>
+  <!-- Side tab -->
+  <a href="https://keyprimeroofing.com/free-estimate" class="side-tab">Get Instant Quote</a>
 
   <script src="js/main.js"></script>
 </body>
