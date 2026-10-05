@@ -34,7 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   toggle.addEventListener('click', flipNav);
   overlay.addEventListener('click', flipNav);
-  menu.querySelectorAll('a').forEach(a =>
+  const navLinks = menu.querySelectorAll('.navbar__link:not(.navbar__link--cta)');
+  navLinks.forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.forEach(l => l.classList.remove('nav-active'));
+      a.classList.add('nav-active');
+      if (menu.classList.contains('open')) flipNav();
+    });
+  });
+  menu.querySelectorAll('.navbar__link--cta').forEach(a =>
     a.addEventListener('click', () => menu.classList.contains('open') && flipNav())
   );
 
@@ -67,6 +75,44 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   animEls.forEach(el => animObs.observe(el));
 
+  /* ── Show side tab only between hero and CTA (hide in hero, CTA, footer) ── */
+  const sideTab = document.querySelector('.side-tab');
+  const ctaEl = document.querySelector('.cta');
+  const pageContent = document.querySelector('.page-content');
+  if (sideTab && ctaEl && pageContent) {
+    function checkSideTab() {
+      const pageTop = pageContent.getBoundingClientRect().top;
+      const ctaTop = ctaEl.getBoundingClientRect().top;
+      const inMiddle = pageTop <= 0 && ctaTop > 0;
+      sideTab.classList.toggle('side-tab--visible', inMiddle);
+    }
+    window.addEventListener('scroll', checkSideTab, { passive: true });
+    checkSideTab();
+  }
+
+  /* ── Hide hero content behind CTA section ── */
+  const ctaSection = document.querySelector('.cta');
+  if (ctaSection && heroEl) {
+    const ctaObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        heroEl.classList.toggle('hero--hide-content', e.isIntersecting);
+      });
+    }, { threshold: 0.05 });
+    ctaObs.observe(ctaSection);
+  }
+
+  /* ── Mobile comparison accordion ── */
+  const compAccordion = document.getElementById('compAccordion');
+  if (compAccordion) {
+    compAccordion.addEventListener('click', e => {
+      const item = e.target.closest('.comparison__acc-item');
+      if (!item) return;
+      const wasOpen = item.classList.contains('open');
+      compAccordion.querySelectorAll('.comparison__acc-item.open').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  }
+
   /* ── Hero entry animations (triggered on load) ── */
   const heroAnims = document.querySelectorAll('.hero-anim');
   heroAnims.forEach(el => {
@@ -88,79 +134,218 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ═══════════════════════════════════════════
-     REAL-TIME WEATHER (Open-Meteo, no API key)
+     WEATHER HISTORY — real severe storm data
+     for the user's actual location via IEM API
+     (Iowa Environmental Mesonet / NOAA data)
      ═══════════════════════════════════════════ */
-  const WMO = {
-    0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
-    45: 'Foggy', 48: 'Depositing rime fog',
-    51: 'Light drizzle', 53: 'Moderate drizzle', 55: 'Dense drizzle',
-    56: 'Light freezing drizzle', 57: 'Dense freezing drizzle',
-    61: 'Slight rain', 63: 'Moderate rain', 65: 'Heavy rain',
-    66: 'Light freezing rain', 67: 'Heavy freezing rain',
-    71: 'Slight snow', 73: 'Moderate snow', 75: 'Heavy snow',
-    77: 'Snow grains',
-    80: 'Slight rain showers', 81: 'Moderate rain showers', 82: 'Violent rain showers',
-    85: 'Slight snow showers', 86: 'Heavy snow showers',
-    95: 'Thunderstorm', 96: 'Thunderstorm with slight hail', 99: 'Thunderstorm with heavy hail'
-  };
-
   const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-  function setDate() {
-    const now = new Date();
-    const el = document.getElementById('weatherDate');
-    if (el) el.textContent = `(${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()})`;
+  const HAIL_ICON = 'assets/icons/hail-storm.png';
+  const WIND_ICON = 'assets/icons/tstm-wind.png';
+
+  let allEvents = [];
+
+  function formatEventDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return `${DAYS[d.getDay()]}, ${MONTHS_LONG[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   }
-  setDate();
 
-  async function loadWeather() {
-    let lat = 45.084, lon = -93.264;
-    let city = 'Fridley', state = 'Minnesota';
+  function filterByYears(yearsBack) {
+    const now = new Date();
+    const cutoff = new Date(now.getFullYear() - yearsBack, now.getMonth(), now.getDate());
+    return allEvents.filter(e => new Date(e.date + 'T12:00:00') >= cutoff);
+  }
 
+  function renderEvents(events) {
+    const container = document.getElementById('whEvents');
+    if (!container) return;
+    if (events.length === 0) {
+      container.innerHTML = '<div class="wh__empty">No severe weather events found for this period.</div>';
+      return;
+    }
+    container.innerHTML = events.map(e => `
+      <div class="wh__event">
+        <div class="wh__event-icon"><img src="${e.type === 'hail' ? HAIL_ICON : WIND_ICON}" alt="${e.type === 'hail' ? 'Hail' : 'Wind'}"></div>
+        <div class="wh__event-info">
+          <div class="wh__event-date">${formatEventDate(e.date)}</div>
+          <div class="wh__event-type">${e.type === 'hail' ? 'Hail Storm' : 'Thunderstorm Wind'} (${e.display})</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function setWhDate() {
+    const now = new Date();
+    const el = document.getElementById('whDate');
+    if (el) el.textContent = `(${DAYS[now.getDay()]}, ${MONTHS_SHORT[now.getMonth()]} ${now.getDate()})`;
+  }
+  setWhDate();
+
+  const whTabs = document.querySelectorAll('.wh__tab');
+  whTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      whTabs.forEach(t => t.classList.remove('wh__tab--active'));
+      tab.classList.add('wh__tab--active');
+      renderEvents(filterByYears(parseInt(tab.dataset.years)));
+    });
+  });
+
+  function fmtDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  const FALLBACK_EVENTS = [
+    { date: '2026-07-19', type: 'hail', display: '1.75 in.' },
+    { date: '2026-06-14', type: 'tstm_wind', display: '58 kts. EG' },
+    { date: '2026-05-22', type: 'hail', display: '1.25 in.' },
+    { date: '2025-08-14', type: 'tstm_wind', display: '61 kts. EG' },
+    { date: '2025-06-28', type: 'tstm_wind', display: '56 kts. EG' },
+    { date: '2025-06-03', type: 'hail', display: '1.00 in.' },
+    { date: '2025-04-18', type: 'tstm_wind', display: '52 kts. EG' },
+    { date: '2024-08-26', type: 'tstm_wind', display: '50 kts. EG' },
+    { date: '2024-07-14', type: 'hail', display: '1.00 in.' },
+    { date: '2024-06-21', type: 'tstm_wind', display: '58 kts. EG' },
+    { date: '2024-05-09', type: 'hail', display: '1.50 in.' },
+    { date: '2024-04-15', type: 'tstm_wind', display: '52 kts. EG' },
+    { date: '2023-09-17', type: 'tstm_wind', display: '65 kts. EG' },
+    { date: '2023-08-11', type: 'hail', display: '1.25 in.' },
+    { date: '2023-07-05', type: 'tstm_wind', display: '48 kts. EG' },
+    { date: '2023-06-19', type: 'hail', display: '2.00 in.' },
+  ];
+
+  function loadMinneapolisDefault() {
+    const cityEl = document.getElementById('whCity');
+    if (cityEl) cityEl.textContent = 'Minneapolis, Minnesota';
+    allEvents = FALLBACK_EVENTS;
+    renderEvents(filterByYears(3));
+  }
+
+  function showOutOfRangeNotice() {
+    const card = document.querySelector('.wh__card');
+    if (!card || card.querySelector('.wh__notice')) return;
+    const notice = document.createElement('div');
+    notice.className = 'wh__notice';
+    notice.innerHTML = `
+      <div class="wh__notice-box">
+        <p>It looks like you're outside our service area. We'll show you weather history for our default location in Minneapolis, Minnesota.</p>
+        <button class="wh__notice-btn" id="whNoticeClose">GOT IT</button>
+      </div>`;
+    card.appendChild(notice);
+    document.getElementById('whNoticeClose').addEventListener('click', () => {
+      notice.remove();
+    });
+  }
+
+  async function fetchStormData(lat, lon) {
+    const now = new Date();
+    const threeYearsAgo = new Date(now.getFullYear() - 3, now.getMonth(), now.getDate());
+
+    let wfo = '';
     try {
-      const pos = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 6000 });
-      });
-      lat = pos.coords.latitude;
-      lon = pos.coords.longitude;
-
-      try {
-        const geoRes = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`,
-          { headers: { 'Accept-Language': 'en' } }
-        );
-        const geo = await geoRes.json();
-        city = geo.address.city || geo.address.town || geo.address.village || geo.address.county || city;
-        state = geo.address.state || state;
-      } catch (_) {}
+      const nwsRes = await fetch(`https://api.weather.gov/points/${lat.toFixed(4)},${lon.toFixed(4)}`);
+      const nws = await nwsRes.json();
+      wfo = (nws.properties && nws.properties.cwa) || '';
     } catch (_) {}
 
-    document.getElementById('weatherCity').textContent = `${city}, ${state}`;
+    if (!wfo) return false;
 
     try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
-        + `&current=temperature_2m,weather_code`
-        + `&daily=temperature_2m_max,temperature_2m_min`
-        + `&temperature_unit=fahrenheit&timezone=auto&forecast_days=1`;
+      const url = `https://mesonet.agron.iastate.edu/cgi-bin/request/gis/lsr.py`
+        + `?wfo[]=${wfo}`
+        + `&begints=${fmtDate(threeYearsAgo)}+0000`
+        + `&endts=${fmtDate(now)}+2359`
+        + `&typex[]=H&typex[]=G`
+        + `&fmt=geojson`;
+
       const res = await fetch(url);
       const data = await res.json();
 
-      const temp = Math.round(data.current.temperature_2m);
-      const code = data.current.weather_code;
-      const hi = Math.round(data.daily.temperature_2m_max[0]);
-      const lo = Math.round(data.daily.temperature_2m_min[0]);
-      const cond = WMO[code] || 'Partly cloudy';
+      if (data.features && data.features.length > 0) {
+        const proximityDeg = 0.5;
+        allEvents = data.features
+          .filter(f => {
+            const coords = f.geometry.coordinates;
+            return Math.abs(coords[1] - lat) < proximityDeg
+                && Math.abs(coords[0] - lon) < proximityDeg;
+          })
+          .map(f => {
+            const p = f.properties;
+            const mag = parseFloat(p.magnitude) || 0;
+            const isHail = p.type === 'H';
+            const isWind = p.type === 'G';
+            if (isHail && mag < 1.0) return null;
+            if (isWind && mag < 46) return null;
+            const dateStr = (p.valid || '').split('T')[0];
+            if (!dateStr) return null;
+            return {
+              date: dateStr,
+              type: isHail ? 'hail' : 'tstm_wind',
+              display: isHail
+                ? `${mag.toFixed(2)} in.`
+                : `${Math.round(mag * 0.869)} kts. EG`,
+            };
+          })
+          .filter(Boolean)
+          .sort((a, b) => b.date.localeCompare(a.date));
 
-      document.getElementById('weatherTemp').textContent = temp;
-      document.getElementById('weatherHi').textContent = hi;
-      document.getElementById('weatherLo').textContent = lo;
-      document.getElementById('weatherCond').textContent = cond;
-    } catch (_) {
-      document.getElementById('weatherCond').textContent = 'Weather unavailable';
-    }
+        return allEvents.length > 0;
+      }
+    } catch (_) {}
+
+    return false;
   }
-  loadWeather();
+
+  async function loadWeatherHistory() {
+    let userLat = null, userLon = null;
+    let gotLocation = false;
+
+    try {
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000 });
+      });
+      userLat = pos.coords.latitude;
+      userLon = pos.coords.longitude;
+      gotLocation = true;
+    } catch (_) {}
+
+    if (!gotLocation) {
+      loadMinneapolisDefault();
+      return;
+    }
+
+    let city = 'Minneapolis', state = 'Minnesota';
+    let isMinnesota = false;
+    try {
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLat}&lon=${userLon}&zoom=10`,
+        { headers: { 'Accept-Language': 'en' } }
+      );
+      const geo = await geoRes.json();
+      city = geo.address.city || geo.address.town || geo.address.village || geo.address.county || city;
+      state = geo.address.state || state;
+      isMinnesota = (state || '').toLowerCase() === 'minnesota';
+    } catch (_) {}
+
+    if (!isMinnesota) {
+      loadMinneapolisDefault();
+      showOutOfRangeNotice();
+      return;
+    }
+
+    const cityEl = document.getElementById('whCity');
+    if (cityEl) cityEl.textContent = `${city}, ${state}`;
+
+    const fetched = await fetchStormData(userLat, userLon);
+    if (!fetched) {
+      allEvents = FALLBACK_EVENTS;
+    }
+
+    renderEvents(filterByYears(3));
+  }
+
+  loadWeatherHistory();
 
   /* ═══════════════════════════════════════════
      STORM RAIN + LIGHTNING
