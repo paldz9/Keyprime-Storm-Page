@@ -1,7 +1,7 @@
 /* VERSION 2 — Larger & Bolder
    Bigger heading, heavier sub & body weights, tighter line heights */
 .hero__heading {
-  font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
   font-weight: 800;
   letter-spacing: .04em;
   line-height: 1.05;

@@ -298,6 +298,7 @@ ul { list-style: none; }
   font-weight: 700; line-height: 1.1;
   color: var(--blk); letter-spacing: .06em;
   margin-bottom: 20px;
+  white-space: nowrap;
 }
 .hero__body {
   border-left: 4px solid var(--red);
