@@ -17,9 +17,16 @@
 }
 .hero__text {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(.88rem, 1.05vw, .98rem);
-  font-weight: 400;
-  opacity: .85;
+  font-size: clamp(.9rem, 1.08vw, 1rem);
+  font-weight: 500;
+  opacity: 1;
   line-height: 1.75;
   letter-spacing: .01em;
+}
+.hero__quote-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .94rem;
+  font-weight: 500;
+  opacity: 1;
+  line-height: 1.75;
 }

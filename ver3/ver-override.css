@@ -1,19 +1,25 @@
-/* VERSION 3 — Light & Elegant
-   Larger heading with thinner weight, refined spacing */
+/* VERSION 3 — Clean & Readable
+   Clear heading with strong weight, high-contrast body text */
 .hero__heading {
   font-size: clamp(2.6rem, 5vw, 4.2rem);
-  font-weight: 500;
-  letter-spacing: .08em;
+  font-weight: 700;
+  letter-spacing: .06em;
   line-height: 1.12;
 }
 .hero__sub {
   font-size: clamp(1.05rem, 1.3vw, 1.2rem);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.5;
 }
 .hero__text {
-  font-size: clamp(.9rem, 1.05vw, 1rem);
-  font-weight: 300;
-  opacity: .8;
+  font-size: clamp(.92rem, 1.08vw, 1.02rem);
+  font-weight: 500;
+  opacity: 1;
   line-height: 1.75;
+}
+.hero__quote-text {
+  font-size: .94rem;
+  font-weight: 500;
+  opacity: 1;
+  line-height: 1.8;
 }

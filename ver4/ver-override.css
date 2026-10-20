@@ -13,9 +13,15 @@
 }
 .hero__text {
   font-size: clamp(.95rem, 1.15vw, 1.08rem);
-  font-weight: 400;
-  opacity: .9;
+  font-weight: 500;
+  opacity: 1;
   line-height: 1.7;
+}
+.hero__quote-text {
+  font-size: .96rem;
+  font-weight: 500;
+  opacity: 1;
+  line-height: 1.75;
 }
 .hero__content {
   max-width: 560px;

@@ -17,6 +17,12 @@
   opacity: 1;
   line-height: 1.65;
 }
+.hero__quote-text {
+  font-size: .96rem;
+  font-weight: 600;
+  opacity: 1;
+  line-height: 1.75;
+}
 .hero__body {
   border-left-width: 5px;
 }
