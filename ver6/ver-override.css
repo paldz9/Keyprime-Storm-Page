@@ -1,0 +1,22 @@
+/* VERSION 6 — High Contrast Bold
+   Larger across the board, heavier weights, full opacity body text */
+.hero__heading {
+  font-size: clamp(2.6rem, 5.2vw, 4.4rem);
+  font-weight: 800;
+  letter-spacing: .05em;
+  line-height: 1.08;
+}
+.hero__sub {
+  font-size: clamp(1.12rem, 1.4vw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.hero__text {
+  font-size: clamp(.94rem, 1.12vw, 1.06rem);
+  font-weight: 500;
+  opacity: 1;
+  line-height: 1.65;
+}
+.hero__body {
+  border-left-width: 5px;
+}

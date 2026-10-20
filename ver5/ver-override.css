@@ -1,0 +1,25 @@
+/* VERSION 5 — Montserrat Wide & Clean
+   Switch hero to Montserrat, wider letter spacing, medium weights */
+.hero__heading {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.hero__sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+.hero__text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(.88rem, 1.05vw, .98rem);
+  font-weight: 400;
+  opacity: .85;
+  line-height: 1.75;
+  letter-spacing: .01em;
+}

@@ -1,0 +1,22 @@
+/* VERSION 4 — Extra Large Impact
+   Maximum heading size, heavy black weight, larger body text */
+.hero__heading {
+  font-size: clamp(3.2rem, 6vw, 5.2rem);
+  font-weight: 900;
+  letter-spacing: .03em;
+  line-height: 1.0;
+}
+.hero__sub {
+  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.hero__text {
+  font-size: clamp(.95rem, 1.15vw, 1.08rem);
+  font-weight: 400;
+  opacity: .9;
+  line-height: 1.7;
+}
+.hero__content {
+  max-width: 560px;
+}
