@@ -142,7 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-  const BASE = document.querySelector('script[src*="main.js"]')?.src.includes('../') ? '../' : '';
+  const scriptEl = document.querySelector('script[src*="main.js"]');
+  const BASE = scriptEl && scriptEl.getAttribute('src').startsWith('../') ? '../' : '';
   const HAIL_ICON = BASE + 'assets/icons/hail-storm.png';
   const WIND_ICON = BASE + 'assets/icons/tstm-wind.png';
 
