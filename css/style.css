@@ -339,7 +339,7 @@ ul { list-style: none; }
   line-height: .7; pointer-events: none;
 }
 
-/* ── Weather History — bottom right (same position as old forecast) ── */
+/* ── Weather Events — bottom right (same position as old forecast) ── */
 .hero__wh {
   position: absolute; z-index: 3;
   bottom: 56px; right: clamp(48px, 6vw, 140px);

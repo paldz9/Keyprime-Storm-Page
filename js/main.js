@@ -142,8 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-  const HAIL_ICON = 'assets/icons/hail-storm.png';
-  const WIND_ICON = 'assets/icons/tstm-wind.png';
+  const BASE = document.querySelector('script[src*="main.js"]')?.src.includes('../') ? '../' : '';
+  const HAIL_ICON = BASE + 'assets/icons/hail-storm.png';
+  const WIND_ICON = BASE + 'assets/icons/tstm-wind.png';
 
   let allEvents = [];
 
@@ -219,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cityEl = document.getElementById('whCity');
     if (cityEl) cityEl.textContent = 'Minneapolis, Minnesota';
     allEvents = FALLBACK_EVENTS;
-    renderEvents(filterByYears(3));
+    renderEvents(filterByYears(2));
   }
 
   function showOutOfRangeNotice() {
@@ -229,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     notice.className = 'wh__notice';
     notice.innerHTML = `
       <div class="wh__notice-box">
-        <p>It looks like you're outside our service area. We'll show you weather history for our default location in Minneapolis, Minnesota.</p>
+        <p>It looks like you're outside our service area. We'll show you weather events for our default location in Minneapolis, Minnesota.</p>
         <button class="wh__notice-btn" id="whNoticeClose">GOT IT</button>
       </div>`;
     card.appendChild(notice);
@@ -342,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
       allEvents = FALLBACK_EVENTS;
     }
 
-    renderEvents(filterByYears(3));
+    renderEvents(filterByYears(2));
   }
 
   loadWeatherHistory();
