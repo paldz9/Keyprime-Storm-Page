@@ -399,7 +399,7 @@ ul { list-style: none; }
 
 /* Tabs */
 .wh__tabs {
-  display: flex; gap: 0; margin-bottom: 12px;
+  display: none;
 }
 .wh__tab {
   font-family: var(--font-hero);
