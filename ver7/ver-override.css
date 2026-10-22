@@ -58,7 +58,7 @@
 .tag--light {
   background: transparent;
   color: var(--red);
-  border: 1px solid var(--red);
+  border: none;
 }
 .service-card {
   background: var(--off);
