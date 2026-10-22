@@ -1,0 +1,47 @@
+/* VERSION 7 — White Fonts, Dark Background
+   All hero text and widget elements switched to white for dark video */
+
+/* Hero text */
+.hero__heading { color: #fff; }
+.hero__sub { color: #fff; }
+.hero__text { color: rgba(255,255,255,.85); }
+.hero__quote-text { color: #fff; }
+.hero__qm { color: #fff; opacity: .3; }
+.hero__body { border-left-color: var(--red); }
+
+/* Weather Events widget */
+.wh__title { color: #fff; }
+.wh__city { color: #fff; }
+.wh__date { color: rgba(255,255,255,.5); }
+.wh__event-date { color: #fff; }
+.wh__event-type { color: rgba(255,255,255,.7); }
+.wh__loading { color: rgba(255,255,255,.6); }
+.wh__empty { color: rgba(255,255,255,.6); }
+
+/* Weather card border and corners — white */
+.wh__card {
+  border-color: rgba(255,255,255,.3);
+}
+.wh__corner {
+  background: rgba(255,255,255,.25);
+  border-color: rgba(255,255,255,.4);
+}
+
+/* Event row dividers */
+.wh__event {
+  border-bottom-color: rgba(255,255,255,.1);
+}
+
+/* Scrollbar */
+.wh__events::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.2);
+}
+
+/* Partner logos — invert to white */
+.partners__track img {
+  filter: brightness(0) invert(1);
+  opacity: .7;
+}
+.partners__track img:hover {
+  opacity: 1;
+}
