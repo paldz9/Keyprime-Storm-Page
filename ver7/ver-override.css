@@ -55,7 +55,11 @@
 }
 .services__bg { display: none; }
 .services__heading { color: var(--blk); }
-.tag--light { background: var(--blk); }
+.tag--light {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+}
 .service-card {
   background: var(--off);
   border-color: var(--gray-lt);
