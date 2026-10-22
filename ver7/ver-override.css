@@ -45,3 +45,24 @@
 .partners__track img:hover {
   opacity: 1;
 }
+
+/* Section backgrounds — clear separation from dark hero */
+.services {
+  background: #fff;
+}
+.services__overlay {
+  background: none;
+}
+.services__bg { display: none; }
+.services__heading { color: var(--blk); }
+.tag--light { background: var(--blk); }
+.service-card {
+  background: var(--off);
+  border-color: var(--gray-lt);
+}
+.service-card:hover {
+  background: var(--white);
+  box-shadow: 0 20px 50px rgba(0,0,0,.08);
+}
+.service-card h3 { color: var(--blk); }
+.service-card p { color: var(--dark2); }
